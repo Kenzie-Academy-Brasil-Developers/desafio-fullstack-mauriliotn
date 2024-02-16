@@ -1,3 +1,4 @@
+"use client"
 import { ToastContainer } from "react-toastify";
 import SessionPage from "./login/page";
 

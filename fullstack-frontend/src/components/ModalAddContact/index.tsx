@@ -12,13 +12,13 @@ import InputPhone from "../inputs/inputPhone"
 
 interface ModalProps {
     toggleModal: () => void
-    setContact: Dispatch<SetStateAction<ContactData[]>>
+    setContacts: Dispatch<SetStateAction<ContactData[]>>
 }
 
-export const ModalAddContact = ({toggleModal, setContact }: ModalProps) =>{
+export const ModalAddContact = ({toggleModal, setContacts }: ModalProps) =>{
     const [loading, setLoading] = useState<boolean | null>(false);
 
-    const { contactRegister } = ContactCont();
+    const { contactRegister,  } = ContactCont();
     
     const {register, handleSubmit, formState: {errors, isDirty, isValid}} = useForm<ContactData>({
         resolver: zodResolver(ContactSchemaRequest)
@@ -26,7 +26,7 @@ export const ModalAddContact = ({toggleModal, setContact }: ModalProps) =>{
 
     const submit = (data: ContactData): void => {
         contactRegister(data);
-        setContact(previusContacts => [data, ... previusContacts])
+        setContacts(previusContacts => [... previusContacts, data, ])
         toggleModal()
     }
 

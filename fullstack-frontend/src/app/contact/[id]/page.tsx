@@ -1,6 +1,9 @@
+import HeaderDash from "@/components/HeaderDash"
 import { CardDetail } from "@/components/cards/cardDetail"
 import { ContactData } from "@/schemas/contatc.schema"
 import { api } from "@/services/api"
+import { getCookie } from "cookies-next"
+import { cookies } from "next/headers"
 import Link from "next/link"
 
 
@@ -16,21 +19,23 @@ export async function generateStaticParams() {
 
 const Contact = async ({params}: PageProps) => {
     console.log(params);
+    const user = getCookie("desafio.user", { cookies })
     
     const res = await api.get(`/contacts/${params.id}`)
     const contact: ContactData = res.data
 
     return (
         <>
-        <header className="body p-4">
-            <h1 className="text-center">Contact Detail</h1>
-        </header>
-        <main className="flex flex-col body min-h-screen p-4">
-            <div className="flex justify-end p-6">
-                <Link href={"/dashboard"} className="btn-back">
-                    Voltar
-                </Link>
-            </div>
+        <main className="flex flex-col body min-h-screen">
+            <HeaderDash/>
+            <section className="body w-full border-y border-gray-600">
+                <div className="container flex justify-between items-center py-11 px-4 ">
+                    <h1 className="text-lg font-semibold leading-7 "> Olá, {user}</h1>
+                    <Link href={"/dashboard"} className="btn-back">
+                        Voltar
+                    </Link>
+                </div>
+            </section>
             <div className="flex items-center justify-center">
                 <CardDetail contact={contact}/>
             </div>

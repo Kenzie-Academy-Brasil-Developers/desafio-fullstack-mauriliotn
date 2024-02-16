@@ -12,7 +12,7 @@ export const Card = ({contact, setContact}: CardProps) =>{
          
     return(
         <>
-        <Link href={`/contact/${contact.id}`} className="flex flex-col justify-center text-center bg-pink-800 hover:bg-green-400 w-48 min-h-20 rounded-lg p-4 gap-4">
+        <Link href={`/contact/${contact.id}`} className="flex flex-col justify-center text-center bg-pink-800 hover:bg-green-400 w-48 min-h-20 rounded-lg">
             <div>
                 {contact.fullName}
             </div>

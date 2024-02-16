@@ -1,3 +1,4 @@
+import HeaderDash from "@/components/HeaderDash";
 import { ListContacts } from "@/components/listContact";
 import { getCookie } from "cookies-next";
 import { NextPage } from "next";
@@ -14,16 +15,20 @@ const Verifytoken = async () => {
 }
 
 const DashboardPage: NextPage = async () => {
+  const user = getCookie("desafio.user", { cookies })
   
   await Verifytoken()
   
   return (
     <>
-      <header className="body p-4">
-        <h1 className="text-center">Contact List</h1> 
-      </header>
-      <main className="body min-h-screen p-4">
-        <ListContacts />
+      <main className="body min-h-screen w-full">
+        <HeaderDash/>
+        <section className="body w-full border-y border-gray-600">
+          <div className="container py-11 px-4">
+            <h1 className="text-lg font-semibold leading-7 "> Olá, {user}</h1>
+          </div>
+        </section>
+          <ListContacts />
       </main>
     </>
   );
