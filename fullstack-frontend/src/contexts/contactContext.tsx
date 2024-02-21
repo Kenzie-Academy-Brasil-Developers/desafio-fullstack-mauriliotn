@@ -1,85 +1,109 @@
 import { ContactData } from "@/schemas/contatc.schema";
 import { api } from "@/services/api";
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState} from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { getCookie } from "cookies-next";
-
-
+import { useRouter } from "next/navigation";
+import { useAuth } from "./AuthContext";
 
 interface Props {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 interface ContactProvidersProps {
-    contactRegister: (contactData: ContactData) => void
-    contactDelete: (deletingID: string) => void
-    contactEdit: (contactData: ContactData, editingID: string) => void
-    contacts: ContactData[]
-    setContacts: Dispatch<SetStateAction<ContactData[]>>
-    edit: ContactData []
-    setEdit: Dispatch<SetStateAction<ContactData[]>>
+  contactRegister: (contactData: ContactData) => void;
+  contactDelete: (deletingID: string) => void;
+  contactEdit: (contactData: ContactData, editingID: string) => void;
+  contacts: ContactData[];
+  setContacts: Dispatch<SetStateAction<ContactData[]>>;
+  edit: ContactData[];
+  setEdit: Dispatch<SetStateAction<ContactData[]>>;
 }
 
-const token = getCookie("desafio.token")
+export const ContactContext = createContext({} as ContactProvidersProps);
 
-export const ContactContext =  createContext({} as ContactProvidersProps)
+export const ContactProvider = ({ children }: Props) => {
+  const router = useRouter();
+  const { isUpdated, setIsUpdated } = useAuth();
+  const [contacts, setContacts] = useState<ContactData[]>([]);
+  const [edit, setEdit] = useState<ContactData[]>([]);
 
-export const ContactProvider = ({children}: Props) => {
+  useEffect(() => {
+    const getContact = async () => {
+      const response = await api.get("contacts");
 
-    const [contacts, setContacts] = useState<ContactData[]>([])
-    const [edit, setEdit] = useState<ContactData[]>([])
-    
-    
+      setContacts(response.data);
+    };
 
-    useEffect(() => {
-        (async () => {
-            const response = await api.get("contacts")
+    getContact();
+  }, [isUpdated]);
 
-            setContacts(response.data)
-        })()
+  const contactRegister = (contactData: ContactData) => {
+    const token = getCookie("desafio.token");
+    api.post("/contacts", contactData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setIsUpdated(!isUpdated);
+  };
 
-    }, [])
-
-    const contactRegister = (contactData: ContactData) => {
-        api.post("/contacts", contactData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
+  const contactEdit = async (contactData: ContactData, editingID: string) => {
+    const token = getCookie("desafio.token");
+    try {
+      await api.patch(`/contacts/${editingID}`, contactData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+    } finally {
+      setIsUpdated(!isUpdated);
+      router.push("/dashboard");
     }
 
-    const contactEdit = async (contactData: ContactData, editingID: string) => {
-        const {data} = await api.patch(`/contacts/${editingID}`,
-            contactData,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-            }
-        })
-        const newContact = contacts.map((contact) => {
-            if (contact.id === editingID) {
-                return data
-            } else {
-                return contact
-            }
-        })
-        setContacts(newContact)
-    }
+    // const newContact = contacts.map((contact) => {
+    //   if (contact.id === editingID) {
+    //     return data;
+    //   } else {
+    //     return contact;
+    //   }
+    // });
+    // setContacts(newContact);
+  };
 
-    const contactDelete = (deletingID: string) => {
-        api.delete(`/contacts/${deletingID}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-    }
+  const contactDelete = (deletingID: string) => {
+    const token = getCookie("desafio.token");
+    api.delete(`/contacts/${deletingID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setIsUpdated(!isUpdated);
+  };
 
-    
-    
-    return (
-        <ContactContext.Provider value={{ contactRegister, contactDelete, contactEdit, contacts, setContacts, edit, setEdit }}>
-            {children}
-        </ContactContext.Provider>
-    )
-}
+  return (
+    <ContactContext.Provider
+      value={{
+        contactRegister,
+        contactDelete,
+        contactEdit,
+        contacts,
+        setContacts,
+        edit,
+        setEdit,
+      }}
+    >
+      {children}
+    </ContactContext.Provider>
+  );
+};
 
-export const ContactCont = () => useContext(ContactContext)
+export const ContactCont = () => useContext(ContactContext);

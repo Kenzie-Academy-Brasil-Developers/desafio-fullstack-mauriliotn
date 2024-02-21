@@ -26,23 +26,6 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-input::-ms-reveal,
-input::-ms-clear,
-select::-ms-reveal,
-select::-ms-clear {
-  display: none;
-}
-
-input:autofill,
-input:autofill:hover,
-input:autofill:focus,
-select:autofill,
-select:autofill:hover,
-select:autofill:focus {
-  -webkit-text-fill-color: white;
-  box-shadow: 0 0 0px 1000px rgb(55 65 81 / var(--tw-bg-opacity)) inset;
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -76,7 +59,6 @@ select:autofill:focus {
   .input {
     @apply w-full mt-5 bg-gray-700 border border-solid border-gray-700 focus:border-white text-base font-normal leading-7 px-4 h-12 rounded-md disabled:opacity-50 placeholder-gray-500;
   }
-
   .pageBox {
     @apply flex flex-col items-center justify-center p-4 w-full min-h-screen;
   }

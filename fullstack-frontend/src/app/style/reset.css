@@ -1,0 +1,16 @@
+input::-ms-reveal,
+input::-ms-clear,
+select::-ms-reveal,
+select::-ms-clear {
+  display: none;
+}
+
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+select:autofill,
+select:autofill:hover,
+select:autofill:focus {
+  -webkit-text-fill-color: white;
+  box-shadow: 0 0 0px 1000px rgb(55 65 81 / var(--tw-bg-opacity)) inset;
+}

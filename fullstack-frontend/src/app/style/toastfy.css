@@ -1,0 +1,7 @@
+.Toastify__toast-theme--dark.Toastify__toast--default,
+.Toastify__toast-theme--dark.Toastify__toast--info,
+.Toastify__toast-theme--dark.Toastify__toast--success,
+.Toastify__toast-theme--dark.Toastify__toast--warning,
+.Toastify__toast-theme--dark.Toastify__toast--error {
+  @apply bg-gradient-to-b from-gray-800 from-10% to-blue-950 to-80%;
+}

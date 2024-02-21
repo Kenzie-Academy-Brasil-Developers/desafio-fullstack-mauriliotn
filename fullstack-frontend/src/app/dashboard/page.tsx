@@ -2,36 +2,36 @@ import HeaderDash from "@/components/HeaderDash";
 import { ListContacts } from "@/components/listContact";
 import { getCookie } from "cookies-next";
 import { NextPage } from "next";
-import {cookies} from "next/headers"
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const Verifytoken = async () => {
-  const token = getCookie("desafio.token", { cookies })
-  
+  const token = getCookie("desafio.token", { cookies });
+
   if (!token) {
-    redirect("/")
+    redirect("/");
   }
-  return
-}
+  return;
+};
 
 const DashboardPage: NextPage = async () => {
-  const user = getCookie("desafio.user", { cookies })
-  
-  await Verifytoken()
-  
+  const user = getCookie("desafio.user", { cookies });
+
+  await Verifytoken();
+
   return (
     <>
       <main className="body min-h-screen w-full">
-        <HeaderDash/>
+        <HeaderDash />
         <section className="body w-full border-y border-gray-600">
           <div className="container py-11 px-4">
             <h1 className="text-lg font-semibold leading-7 "> Olá, {user}</h1>
           </div>
         </section>
-          <ListContacts />
+        <ListContacts />
       </main>
     </>
   );
 };
 
-export default DashboardPage
+export default DashboardPage;

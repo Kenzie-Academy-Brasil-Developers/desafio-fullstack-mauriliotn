@@ -1,15 +1,10 @@
-"use client"
-import { ToastContainer } from "react-toastify";
+"use client";
 import SessionPage from "./login/page";
 
-
-
-export default async function Home() {
-
+export default function Home() {
   return (
     <>
-    <SessionPage/>
-    <ToastContainer theme="dark" autoClose={1500}/>
+      <SessionPage />
     </>
   );
 }

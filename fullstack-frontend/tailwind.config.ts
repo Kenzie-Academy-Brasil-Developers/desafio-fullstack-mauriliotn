@@ -31,6 +31,7 @@ const config: Config = {
         },
       },
       animation: {
+        spinner: "rotate 1s linear infinite;",
         "rotate-scale-up": "rotate-scale-up 1s ease-in",
         "slide-left":
           "slide-in-left 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.65s both",
@@ -45,9 +46,9 @@ const config: Config = {
         "slide-button": "slide-in-top 0.5s ease-in 0.8s both",
       },
       keyframes: {
-        spinner: {
+        rotate: {
           "0%": { transform: "rotate(0)" },
-          "100%": { opacity: "1", transform: "rotate(360)" },
+          "100%": { transform: "rotate(360)" },
         },
         "rotate-scale-up": {
           "0%": { opacity: "0", transform: "rotate(-540deg) scale(0)" },
