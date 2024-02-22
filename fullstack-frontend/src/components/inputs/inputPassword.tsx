@@ -25,7 +25,7 @@ const InputPassword: ForwardRefExoticComponent<
   const [isHidden, setIsHidden] = useState(true);
   return (
     <div className={`w-full p-4 ${animationClass}`}>
-      <label htmlFor={label} className="text-sm font-normal">
+      <label htmlFor={label} className="text-sm font-normal shadow-lg">
         {label}
       </label>
       <div className="w-full relative">

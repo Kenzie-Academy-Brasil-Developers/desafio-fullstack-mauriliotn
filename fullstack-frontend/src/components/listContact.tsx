@@ -25,13 +25,7 @@ export const ListContacts = () => {
         </div>
         <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 items-center justify-items-start">
           {contacts.map((contact) => {
-            return (
-              <Card
-                key={contact.id}
-                setContact={setContacts}
-                contact={contact}
-              />
-            );
+            return <Card key={contact.id} contact={contact} />;
           })}
         </div>
       </div>

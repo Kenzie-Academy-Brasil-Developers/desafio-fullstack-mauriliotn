@@ -40,7 +40,7 @@ export const Modal = ({
     <div className="top-0 left-0 bg-black bg-opacity-50 w-screen h-screen fixed flex justify-center items-center">
       <div
         ref={blockClosing ? null : ref}
-        className={`bg-gray-800 p-5 shadow-lg ${animationClass}`}
+        className={`bg-gray-800 p-5 shadow-lg rounded-md border-solid ${animationClass}`}
       >
         {children}
       </div>

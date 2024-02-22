@@ -21,7 +21,7 @@ const Input: ForwardRefExoticComponent<
 > = forwardRef(({ error, label, id, animationClass, ...rest }, ref): any => {
   return (
     <div className={`w-full p-4 ${animationClass}`}>
-      <label htmlFor={id} className="text-sm font-normal">
+      <label htmlFor={id} className="text-sm font-normal shadow-lg">
         {label}
       </label>
       <input id={id} className="input" ref={ref} {...rest} />

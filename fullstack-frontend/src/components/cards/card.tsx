@@ -1,11 +1,9 @@
 "use client";
 import { ContactData } from "@/schemas/contatc.schema";
 import Link from "next/link";
-import { Dispatch, SetStateAction } from "react";
 
 interface CardProps {
   contact: ContactData;
-  setContact: Dispatch<SetStateAction<ContactData[]>>;
 }
 
 export const Card = ({ contact }: CardProps) => {

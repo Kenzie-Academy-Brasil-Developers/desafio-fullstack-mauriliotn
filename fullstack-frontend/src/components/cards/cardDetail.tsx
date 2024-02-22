@@ -42,11 +42,11 @@ export const CardDetail = ({ contact }: CardProps) => {
         />
       )}
       <section className="flex justify-center container animate-scale-in-center">
-        <div className="flex flex-col justify-center items-center bg-pink-800  min-w-72 max-w-80 h-18 rounded-lg p-4 gap-4">
+        <div className="flex flex-col justify-center items-center bg-pink-800  min-w-72 max-w-80 h-18 rounded-lg p-4 gap-4 shadow-lg">
           <div className="flex flex-row justify-between items-baseline w-full">
-            <h3>{contactToHandler.fullName}</h3>
+            <h3 className="text-lg ">{contactToHandler.fullName}</h3>
             <button onClick={toggleModal}>
-              <FaRegEdit className="hover:text-green-400" />
+              <FaRegEdit className="hover:text-green-400 shadow-lg" />
             </button>
           </div>
           <div className="flex flex-col p-4 border rounded-md gap-4 w-full">
