@@ -11,7 +11,7 @@ import InputPassword from "../inputs/inputPassword";
 
 interface ModalProps {
   toggleModal: () => void;
-  user: UserData;
+  user?: UserData;
 }
 
 export const ModalEditUser = ({ toggleModal, user }: ModalProps) => {
@@ -33,7 +33,7 @@ export const ModalEditUser = ({ toggleModal, user }: ModalProps) => {
     }
     setUserId(userToHandler.id);
     reset(userToHandler);
-  }, [userForm, reset]);
+  }, [userForm, reset, setUserId]);
 
   const submit = (data: UserData): void => {
     editUser(data, userId);
