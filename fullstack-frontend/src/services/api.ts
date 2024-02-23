@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: "https://desafio-fullstack-mauriliotn.onrender.com/",
   timeout: 5 * 1000,
 });

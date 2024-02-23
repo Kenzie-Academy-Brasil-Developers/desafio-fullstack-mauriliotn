@@ -7,12 +7,12 @@ export const userSchema = z.object({
   password: z.string().min(1, "A senha é obrigatória"),
   telephone: z.string().min(1, "É necessário cadastrar um telefone"),
   createdAt: z.string(),
-  userId: z.string(),
 });
 
 export type UserData = z.infer<typeof userSchema>;
 export const CreateUser = userSchema.omit({
   id: true,
   createdAt: true,
-  userId: true,
 });
+export const EditUser = userSchema.partial();
+export type EditData = z.infer<typeof EditUser>;

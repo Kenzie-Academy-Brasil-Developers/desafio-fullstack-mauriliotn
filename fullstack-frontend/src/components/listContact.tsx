@@ -7,10 +7,9 @@ import { useState } from "react";
 
 export const ListContacts = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const toggleModal = () => setIsOpenModal(!isOpenModal);
 
   const { contacts, setContacts } = ContactCont();
-
-  const toggleModal = () => setIsOpenModal(!isOpenModal);
 
   return (
     <>

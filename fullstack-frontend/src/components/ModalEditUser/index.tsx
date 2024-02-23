@@ -1,44 +1,44 @@
 import { useForm } from "react-hook-form";
 import { Modal } from "../modal";
-import { ContactData } from "@/schemas/contatc.schema";
 import Input from "../inputs/input";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ImSpinner } from "react-icons/im";
-import { ContactCont } from "@/contexts/contactContext";
-import { toast } from "react-toastify";
 import InputTelep from "../inputs/InputPhone";
+import { EditData, UserData } from "@/schemas/user.schema";
+import { toast } from "react-toastify";
+import { useAuth } from "@/contexts/AuthContext";
+import InputPassword from "../inputs/inputPassword";
 
 interface ModalProps {
   toggleModal: () => void;
-  setContact: Dispatch<SetStateAction<ContactData[]>>;
-  contact: ContactData;
+  user: UserData;
 }
 
-export const ModalEditContact = ({ toggleModal, contact }: ModalProps) => {
+export const ModalEditUser = ({ toggleModal, user }: ModalProps) => {
   const [loading, setLoading] = useState<boolean | null>(false);
 
-  const { contacts, contactEdit } = ContactCont();
+  const { editUser, deleteUser, user: userForm, userId, setUserId } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isDirty, isValid },
     reset,
-  } = useForm<ContactData>();
+  } = useForm<UserData>();
 
   useEffect(() => {
-    const contactToHandler = contacts.find((cont) => cont.id === contact.id);
-    if (!contactToHandler) {
+    const userToHandler = userForm;
+    if (!userToHandler) {
       return;
     }
+    setUserId(userToHandler.id);
+    reset(userToHandler);
+  }, [userForm, reset]);
 
-    reset(contactToHandler);
-  }, [contact.id, contacts, reset]);
-
-  const submit = (data: ContactData): void => {
-    contactEdit(data, contact.id);
+  const submit = (data: UserData): void => {
+    editUser(data, userId);
     setLoading;
-    toast.success(`Contato "${data.fullName}" editado com sucesso`);
+    toast.success(`Usuario "${data.fullName}" editado com sucesso`);
     toggleModal();
   };
 
@@ -67,6 +67,13 @@ export const ModalEditContact = ({ toggleModal, contact }: ModalProps) => {
           error={errors.email}
           {...register("email")}
         />
+        <InputPassword
+          label="Senha"
+          placeholder="Digite aqui sua senha"
+          autoComplete="new-password"
+          error={errors.password}
+          {...register("password")}
+        />
         <InputTelep
           id="telephone"
           label="Telefone"
@@ -86,6 +93,21 @@ export const ModalEditContact = ({ toggleModal, contact }: ModalProps) => {
               <ImSpinner size={28} className="animate-rotate" />
             ) : (
               "Editar"
+            )}
+          </button>
+        </div>
+        <div className="w-full p-4">
+          <button
+            onClick={(e) => deleteUser(userId)}
+            className={
+              !isValid || !isDirty ? "btn disable bg p-4" : "btn bg mt-4"
+            }
+            type="button"
+          >
+            {loading ? (
+              <ImSpinner size={28} className="animate-rotate" />
+            ) : (
+              <p className="text-red-500">Excluir a conta</p>
             )}
           </button>
         </div>

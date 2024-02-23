@@ -9,6 +9,7 @@ import Link from "next/link";
 interface PageProps {
   params: { id: string };
 }
+
 export const revalidate = 90;
 
 export async function generateStaticParams() {

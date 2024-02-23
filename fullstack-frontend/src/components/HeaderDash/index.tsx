@@ -1,40 +1,48 @@
 "use client";
-import { deleteCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
-import sair from "../../assets/img/logout-icon-transparent-3.jpg";
-import sair2 from "../../assets/img/sair.png";
-import Image from "next/image";
+import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
+import { CgLogOut } from "react-icons/cg";
+import { CgProfile } from "react-icons/cg";
+import { ModalEditUser } from "../ModalEditUser";
+import { UserData } from "@/schemas/user.schema";
 
-const HeaderDash = () => {
-  const router = useRouter();
-  function logout(): void {
-    deleteCookie("desafio.token");
-    deleteCookie("desafio.user");
+interface HeaderProps {
+  user?: UserData;
+}
 
-    router.push("/");
-  }
+const HeaderDash = ({ user }: HeaderProps) => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const toggleModal = () => setIsOpenModal(!isOpenModal);
+
+  const { logout, user: userForm } = useAuth();
 
   return (
-    <header>
-      <div className="container">
-        <div className="flex flex-wrap items-center justify-between w-full py-4 px-0 gap-4">
-          <h1 className="text-center">Contact List</h1>
-          <button
-            className="flex flex-col justify-center items-center btn-back"
-            onClick={logout}
-          >
-            <Image
-              src={sair2}
-              className="text-white"
-              alt="Descrição da imagem"
-              width={35}
-              height={35}
-            />
-            Logout
-          </button>
+    <>
+      {isOpenModal && <ModalEditUser toggleModal={toggleModal} user={user} />}
+      <header>
+        <div className="container">
+          <div className="flex flex-wrap items-center justify-between w-full py-4 px-0 gap-4">
+            <h1 className="text-center">Contact List</h1>
+            <div className="flex gap-4">
+              <button
+                className="flex flex-col justify-center items-center btn-back"
+                onClick={(e) => toggleModal()}
+              >
+                <CgProfile className="text-5xl" />
+                Profile
+              </button>
+              <button
+                className="flex flex-col justify-center items-center btn-back"
+                onClick={logout}
+              >
+                <CgLogOut className="text-5xl" />
+                Logout
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 };
 

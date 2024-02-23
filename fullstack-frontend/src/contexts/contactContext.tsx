@@ -68,15 +68,6 @@ export const ContactProvider = ({ children }: Props) => {
       setIsUpdated(!isUpdated);
       router.push("/dashboard");
     }
-
-    // const newContact = contacts.map((contact) => {
-    //   if (contact.id === editingID) {
-    //     return data;
-    //   } else {
-    //     return contact;
-    //   }
-    // });
-    // setContacts(newContact);
   };
 
   const contactDelete = (deletingID: string) => {
