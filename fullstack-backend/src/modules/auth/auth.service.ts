@@ -25,7 +25,7 @@ export class AuthService {
         { userName: loginAuthDto.email },
         { subject: user.id, secret: process.env.SECRET_KEY },
       ),
-      user: user.fullName,
+      user: user,
     };
   }
 }
