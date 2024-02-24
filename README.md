@@ -36,3 +36,27 @@ Esta API consiste em um cadastro de clientes que poderá conter muitos contatos 
 É possível realizar operações de criação, leitura, edição e deleção de clientes e contatos.
 
 [link para documentação](https://desafio-fullstack-mauriliotn.onrender.com/api)
+
+## Primeiros passos (Para rodar API localmente)
+
+1. Clone o repositório em sua máquina.
+2. Instale as dependências rodando o seguinte comando:
+
+```shell
+npm install
+```
+
+3. Crie um arquivo **.env**, seguindo os exemplos de variáveis de ambiente contidas no arquivo **.env.example**.
+4. Gere as migrações com o seguinte comando:
+   
+```shell
+npx prisma migrate dev
+```
+
+5. Execute as migrações com o seguinte comando:
+
+```shell
+npm run start:dev
+```
+
+6. Caso queira, você pode testar as rotas por meio da collection **Insomnia.json**. Esse arquivo está localizado na pasta **fullstack-backend**.
