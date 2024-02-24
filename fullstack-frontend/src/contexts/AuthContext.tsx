@@ -1,6 +1,6 @@
 "use client";
 import { SessionData } from "@/schemas/sessionSchema";
-import { EditData, UserData } from "@/schemas/user.schema";
+import { UserData } from "@/schemas/user.schema";
 import { api } from "@/services/api";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
@@ -21,15 +21,17 @@ interface ProviderProps {
 
 interface AuthProviderProps {
   token: string | undefined;
-  userId: string;
   setToken: (value: string) => void;
+  userId: string;
   setUserId: (value: string) => void;
   user: UserData | undefined;
   setUser: Dispatch<SetStateAction<UserData | undefined>>;
   loading: boolean | null;
   setLoading: Dispatch<SetStateAction<boolean>>;
-  isUpdated: boolean;
-  setIsUpdated: Dispatch<SetStateAction<boolean>>;
+  isOpenEditModal: boolean;
+  setIsOpenModal: Dispatch<SetStateAction<boolean>>;
+  isOpenModal: boolean;
+  setIsOpenEditModal: Dispatch<SetStateAction<boolean>>;
   login: (
     UserData: SessionData,
     setLoading: Dispatch<SetStateAction<boolean>>
@@ -38,7 +40,11 @@ interface AuthProviderProps {
     userData: UserData,
     setLoading: Dispatch<SetStateAction<boolean>>
   ) => void;
-  editUser: (userData: UserData, editingID: string) => void;
+  editUser: (
+    userData: UserData,
+    editingID: string,
+    setLoading: Dispatch<SetStateAction<boolean>>
+  ) => void;
   deleteUser: (deletingID: string) => void;
   logout: () => void;
 }
@@ -46,11 +52,12 @@ interface AuthProviderProps {
 const AuthContext = createContext({} as AuthProviderProps);
 
 export const AuthProvider = ({ children }: ProviderProps) => {
-  const [loading, setLoading] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const [user, setUser] = useState<UserData>();
-  const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const router = useRouter();
 
   const register = async (
@@ -61,35 +68,56 @@ export const AuthProvider = ({ children }: ProviderProps) => {
       setLoading(true);
       await api.post("/users", userData);
       toast.success(`Usuários "${userData.fullName}", criado com sucesso!!`);
-      router.push("/");
+      setTimeout(() => {
+        router.push("/");
+      }, 2200);
     } catch (error: any) {
       console.log(error.response.data.message);
       if (error.response.data.message === "email already exists") {
         toast.error("usuário ja cadastrado");
       }
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2200);
     }
   };
 
-  const editUser = async (userData: UserData, editingID: string) => {
+  const editUser = async (
+    userData: UserData,
+    editingID: string,
+    setLoading: Dispatch<SetStateAction<boolean>>
+  ) => {
     try {
       const editToken = getCookie("desafio.token");
       setLoading(true);
-      await api.patch(`/users/${editingID}`, userData, {
+      const { data } = await api.patch(`/users/${editingID}`, userData, {
         headers: {
           Authorization: `Bearer ${editToken}`,
         },
       });
-    } catch (error) {
+      setUser(data);
+      toast.success(`Usuario "${data.fullName}" editado com sucesso`);
+      setTimeout(() => {
+        setIsOpenEditModal(false);
+        setLoading(false);
+      }, 2200);
+    } catch (error: any) {
+      if (error.response.data.message) {
+        toast.error(
+          "É necessário o preenchimento de todos os campos, verifique se todos foram preenchidos"
+        );
+      }
     } finally {
-      setIsUpdated(!isUpdated);
-      router.push("/dashboard");
+      setTimeout(() => {
+        setLoading(false);
+      }, 2200);
     }
   };
 
   const deleteUser = async (deletingID: string) => {
     try {
+      const deleteUser = getCookie("desafio.user");
       const deleteToken = getCookie("desafio.token");
       setLoading(true);
       await api.delete(`/users/${deletingID}`, {
@@ -97,13 +125,16 @@ export const AuthProvider = ({ children }: ProviderProps) => {
           Authorization: `Bearer ${deleteToken}`,
         },
       });
+      toast.success(`${deleteUser}, foi deletado com sucesso`);
       deleteCookie("desafio.token");
       deleteCookie("desafio.user");
       deleteCookie("desafio.id");
     } catch (error) {
     } finally {
-      setIsUpdated(!isUpdated);
-      router.push("/");
+      setTimeout(() => {
+        router.push("/");
+      }, 2200);
+      setLoading(false);
     }
   };
 
@@ -131,7 +162,6 @@ export const AuthProvider = ({ children }: ProviderProps) => {
       toast.error("Ops! Algo deu errado. Senha ou e-mail inválido");
     } finally {
       setTimeout(() => {
-        setIsUpdated(!isUpdated);
         setLoading(false);
       }, 2200);
     }
@@ -144,7 +174,9 @@ export const AuthProvider = ({ children }: ProviderProps) => {
       try {
         setLoading(true);
         const { data } = await api.get(`/users/${profileId}`);
+
         setUser(data);
+        setUserId(data.id);
         router.push("/dashboard");
       } catch (error) {
         console.log(error);
@@ -155,7 +187,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
     if (profileToken) {
       getUser();
     }
-  }, [isUpdated, router]);
+  }, [router]);
 
   const logout = () => {
     deleteCookie("desafio.token");
@@ -167,19 +199,21 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   return (
     <AuthContext.Provider
       value={{
+        token,
+        setToken,
+        user,
         register,
+        setUser,
+        isOpenModal,
+        isOpenEditModal,
+        setIsOpenEditModal,
+        setIsOpenModal,
         editUser,
         deleteUser,
         login,
         logout,
-        token,
-        setToken,
-        user,
         userId,
         setUserId,
-        setUser,
-        isUpdated,
-        setIsUpdated,
         loading,
         setLoading,
       }}

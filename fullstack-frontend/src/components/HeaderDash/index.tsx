@@ -1,24 +1,18 @@
 "use client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
 import { CgLogOut } from "react-icons/cg";
 import { CgProfile } from "react-icons/cg";
 import { ModalEditUser } from "../ModalEditUser";
-import { UserData } from "@/schemas/user.schema";
 
-interface HeaderProps {
-  user?: UserData;
-}
+const HeaderDash = () => {
+  const { isOpenEditModal, setIsOpenEditModal } = useAuth();
+  const toggleModal = () => setIsOpenEditModal(!isOpenEditModal);
 
-const HeaderDash = ({ user }: HeaderProps) => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const toggleModal = () => setIsOpenModal(!isOpenModal);
-
-  const { logout, user: userForm } = useAuth();
+  const { logout } = useAuth();
 
   return (
     <>
-      {isOpenModal && <ModalEditUser toggleModal={toggleModal} user={user} />}
+      {isOpenEditModal && <ModalEditUser toggleModal={toggleModal} />}
       <header>
         <div className="container">
           <div className="flex flex-wrap items-center justify-between w-full py-4 px-0 gap-4">

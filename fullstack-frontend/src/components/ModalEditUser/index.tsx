@@ -4,20 +4,17 @@ import Input from "../inputs/input";
 import { useEffect, useState } from "react";
 import { ImSpinner } from "react-icons/im";
 import InputTelep from "../inputs/InputPhone";
-import { EditData, UserData } from "@/schemas/user.schema";
-import { toast } from "react-toastify";
+import { UserData } from "@/schemas/user.schema";
 import { useAuth } from "@/contexts/AuthContext";
 import InputPassword from "../inputs/inputPassword";
 
 interface ModalProps {
   toggleModal: () => void;
-  user?: UserData;
 }
 
-export const ModalEditUser = ({ toggleModal, user }: ModalProps) => {
-  const [loading, setLoading] = useState<boolean | null>(false);
-
-  const { editUser, deleteUser, user: userForm, userId, setUserId } = useAuth();
+export const ModalEditUser = ({ toggleModal }: ModalProps) => {
+  const [loading, setLoading] = useState(false);
+  const { editUser, deleteUser, user: userForm, userId } = useAuth();
 
   const {
     register,
@@ -27,19 +24,16 @@ export const ModalEditUser = ({ toggleModal, user }: ModalProps) => {
   } = useForm<UserData>();
 
   useEffect(() => {
-    const userToHandler = userForm;
+    const userToHandler = { ...userForm, password: "" };
+
     if (!userToHandler) {
       return;
     }
-    setUserId(userToHandler.id);
     reset(userToHandler);
-  }, [userForm, reset, setUserId]);
+  }, [userForm, reset]);
 
   const submit = (data: UserData): void => {
-    editUser(data, userId);
-    setLoading;
-    toast.success(`Usuario "${data.fullName}" editado com sucesso`);
-    toggleModal();
+    editUser(data, userId, setLoading);
   };
 
   return (
@@ -56,6 +50,7 @@ export const ModalEditUser = ({ toggleModal, user }: ModalProps) => {
           type="text"
           placeholder="Digite aqui seu nome"
           error={errors.fullName}
+          disabled={loading}
           {...register("fullName")}
         />
 
@@ -65,6 +60,7 @@ export const ModalEditUser = ({ toggleModal, user }: ModalProps) => {
           type="email"
           placeholder="Digite aqui seu nome"
           error={errors.email}
+          disabled={loading}
           {...register("email")}
         />
         <InputPassword
@@ -80,17 +76,18 @@ export const ModalEditUser = ({ toggleModal, user }: ModalProps) => {
           type="text"
           placeholder="Digite aqui seu telefone"
           error={errors.telephone}
+          disabled={loading}
           {...register("telephone")}
         />
         <div className="w-full p-4">
           <button
-            className={
-              !isValid || !isDirty ? "btn negative bg p-4" : "btn bg mt-4"
-            }
+            className={!isValid || !isDirty ? "btn negative bg p-4" : "btn bg"}
             type="submit"
           >
             {loading ? (
-              <ImSpinner size={28} className="animate-rotate" />
+              <span className="inline-flex items-center">
+                <ImSpinner size={28} className="animate-spin" />
+              </span>
             ) : (
               "Editar"
             )}
@@ -99,13 +96,13 @@ export const ModalEditUser = ({ toggleModal, user }: ModalProps) => {
         <div className="w-full p-4">
           <button
             onClick={(e) => deleteUser(userId)}
-            className={
-              !isValid || !isDirty ? "btn disable bg p-4" : "btn bg mt-4"
-            }
+            className="btn disable bg p-4"
             type="button"
           >
             {loading ? (
-              <ImSpinner size={28} className="animate-rotate" />
+              <span className="inline-flex items-center">
+                <ImSpinner size={28} className="animate-spin" />
+              </span>
             ) : (
               <p className="text-red-500">Excluir a conta</p>
             )}

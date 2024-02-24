@@ -1,6 +1,5 @@
 import HeaderDash from "@/components/HeaderDash";
 import { ListContacts } from "@/components/listContact";
-import { UserData } from "@/schemas/user.schema";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";

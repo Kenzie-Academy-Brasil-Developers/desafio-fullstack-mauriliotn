@@ -40,6 +40,7 @@ export const RegisterForm: NextPage = () => {
           type="text"
           placeholder="Digite aqui seu nome"
           error={errors.fullName}
+          disabled={loading}
           {...register("fullName")}
         />
       </div>
@@ -52,6 +53,7 @@ export const RegisterForm: NextPage = () => {
           placeholder="Digite aqui seu email"
           autoComplete="on"
           error={errors.email}
+          disabled={loading}
           {...register("email")}
         />
       </div>
@@ -63,6 +65,7 @@ export const RegisterForm: NextPage = () => {
           placeholder="Digite aqui sua senha"
           autoComplete="new-password"
           error={errors.password}
+          disabled={loading}
           {...register("password")}
         />
       </div>
@@ -75,6 +78,7 @@ export const RegisterForm: NextPage = () => {
           placeholder="Digite aqui seu telefone"
           autoComplete="on"
           error={errors.telephone}
+          disabled={loading}
           {...register("telephone")}
         />
       </div>
@@ -83,13 +87,13 @@ export const RegisterForm: NextPage = () => {
           className={
             !isValid || !isDirty
               ? "animate-slide-button btn negative bg p-4"
-              : "animate-slide-button btn bg mt-4"
+              : "animate-slide-button btn bg"
           }
           type="submit"
         >
           {loading ? (
-            <span>
-              <ImSpinner size={28} className="animate-rotate" />
+            <span className="inline-flex items-center">
+              <ImSpinner size={28} className="animate-spin" />
             </span>
           ) : (
             "Registrar"

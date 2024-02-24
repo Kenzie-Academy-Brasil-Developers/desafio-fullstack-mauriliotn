@@ -5,7 +5,6 @@ import Input from "../inputs/input";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ImSpinner } from "react-icons/im";
 import { ContactCont } from "@/contexts/contactContext";
-import { toast } from "react-toastify";
 import InputTelep from "../inputs/InputPhone";
 
 interface ModalProps {
@@ -15,7 +14,7 @@ interface ModalProps {
 }
 
 export const ModalEditContact = ({ toggleModal, contact }: ModalProps) => {
-  const [loading, setLoading] = useState<boolean | null>(false);
+  const [loading, setLoading] = useState(false);
 
   const { contacts, contactEdit } = ContactCont();
 
@@ -36,10 +35,7 @@ export const ModalEditContact = ({ toggleModal, contact }: ModalProps) => {
   }, [contact.id, contacts, reset]);
 
   const submit = (data: ContactData): void => {
-    contactEdit(data, contact.id);
-    setLoading;
-    toast.success(`Contato "${data.fullName}" editado com sucesso`);
-    toggleModal();
+    contactEdit(data, contact.id, setLoading);
   };
 
   return (
@@ -56,6 +52,7 @@ export const ModalEditContact = ({ toggleModal, contact }: ModalProps) => {
           type="text"
           placeholder="Digite aqui seu nome"
           error={errors.fullName}
+          disabled={loading}
           {...register("fullName")}
         />
 
@@ -65,6 +62,7 @@ export const ModalEditContact = ({ toggleModal, contact }: ModalProps) => {
           type="email"
           placeholder="Digite aqui seu nome"
           error={errors.email}
+          disabled={loading}
           {...register("email")}
         />
         <InputTelep
@@ -73,17 +71,18 @@ export const ModalEditContact = ({ toggleModal, contact }: ModalProps) => {
           type="text"
           placeholder="Digite aqui seu telefone"
           error={errors.telephone}
+          disabled={loading}
           {...register("telephone")}
         />
         <div className="w-full p-4">
           <button
-            className={
-              !isValid || !isDirty ? "btn negative bg p-4" : "btn bg mt-4"
-            }
+            className={!isValid || !isDirty ? "btn negative bg p-4" : "btn bg "}
             type="submit"
           >
             {loading ? (
-              <ImSpinner size={28} className="animate-rotate" />
+              <span className="inline-flex items-center">
+                <ImSpinner size={28} className="animate-spin" />
+              </span>
             ) : (
               "Editar"
             )}

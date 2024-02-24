@@ -3,19 +3,17 @@ import { Modal } from "../modal";
 import { ContactData, ContactSchemaRequest } from "@/schemas/contatc.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../inputs/input";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { ImSpinner } from "react-icons/im";
 import { ContactCont } from "@/contexts/contactContext";
-import { toast } from "react-toastify";
 import InputPhone from "../inputs/InputPhone";
 
 interface ModalProps {
   toggleModal: () => void;
-  setContacts: Dispatch<SetStateAction<ContactData[]>>;
 }
 
-export const ModalAddContact = ({ toggleModal, setContacts }: ModalProps) => {
-  const [loading, setLoading] = useState<boolean | null>(false);
+export const ModalAddContact = ({ toggleModal }: ModalProps) => {
+  const [loading, setLoading] = useState(false);
 
   const { contactRegister } = ContactCont();
 
@@ -28,10 +26,7 @@ export const ModalAddContact = ({ toggleModal, setContacts }: ModalProps) => {
   });
 
   const submit = (data: ContactData): void => {
-    contactRegister(data);
-    setContacts((previusContacts) => [...previusContacts, data]);
-    toggleModal();
-    toast.success(`Contato "${data.fullName}" criado com sucesso`);
+    contactRegister(data, setLoading);
   };
 
   return (
@@ -48,6 +43,7 @@ export const ModalAddContact = ({ toggleModal, setContacts }: ModalProps) => {
           type="text"
           placeholder="Digite aqui seu nome"
           error={errors.fullName}
+          disabled={loading}
           {...register("fullName")}
         />
 
@@ -57,6 +53,7 @@ export const ModalAddContact = ({ toggleModal, setContacts }: ModalProps) => {
           type="email"
           placeholder="Digite aqui seu nome"
           error={errors.email}
+          disabled={loading}
           {...register("email")}
         />
         <InputPhone
@@ -65,18 +62,17 @@ export const ModalAddContact = ({ toggleModal, setContacts }: ModalProps) => {
           type="text"
           placeholder="Digite aqui seu telefone"
           error={errors.telephone}
+          disabled={loading}
           {...register("telephone")}
         />
         <div className="w-full p-4">
           <button
-            className={
-              !isValid || !isDirty ? "btn negative bg p-4" : "btn bg mt-4"
-            }
+            className={!isValid || !isDirty ? "btn negative bg p-4" : "btn bg "}
             type="submit"
           >
             {loading ? (
-              <span>
-                <ImSpinner size={28} className="animate-rotate" />
+              <span className="inline-flex items-center">
+                <ImSpinner size={28} className="animate-spin" />
               </span>
             ) : (
               "Registrar"
