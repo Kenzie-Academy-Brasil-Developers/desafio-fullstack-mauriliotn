@@ -42,6 +42,7 @@ export const ModalAddContact = ({ toggleModal }: ModalProps) => {
           label="Nome Completo"
           type="text"
           placeholder="Digite aqui seu nome"
+          autoComplete="on"
           error={errors.fullName}
           disabled={loading}
           {...register("fullName")}
@@ -51,7 +52,8 @@ export const ModalAddContact = ({ toggleModal }: ModalProps) => {
           id="email"
           label="E-mail"
           type="email"
-          placeholder="Digite aqui seu nome"
+          placeholder="Digite aqui seu email"
+          autoComplete="on"
           error={errors.email}
           disabled={loading}
           {...register("email")}
@@ -61,6 +63,7 @@ export const ModalAddContact = ({ toggleModal }: ModalProps) => {
           label="Telefone"
           type="text"
           placeholder="Digite aqui seu telefone"
+          autoComplete="on"
           error={errors.telephone}
           disabled={loading}
           {...register("telephone")}

@@ -39,6 +39,7 @@ export const RegisterForm: NextPage = () => {
           label="Nome Completo"
           type="text"
           placeholder="Digite aqui seu nome"
+          autoComplete="on"
           error={errors.fullName}
           disabled={loading}
           {...register("fullName")}

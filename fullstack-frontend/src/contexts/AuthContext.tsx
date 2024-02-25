@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import { SessionData } from "@/schemas/sessionSchema";
 import { UserData } from "@/schemas/user.schema";
 import { api } from "@/services/api";

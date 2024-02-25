@@ -60,7 +60,8 @@ export const ModalEditContact = ({ toggleModal, contact }: ModalProps) => {
           id="email"
           label="E-mail"
           type="email"
-          placeholder="Digite aqui seu nome"
+          placeholder="Digite aqui seu email"
+          autoComplete="on"
           error={errors.email}
           disabled={loading}
           {...register("email")}

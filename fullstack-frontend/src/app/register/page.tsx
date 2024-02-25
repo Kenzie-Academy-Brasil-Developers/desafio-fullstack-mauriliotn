@@ -1,12 +1,20 @@
 import { RegisterForm } from "@/components/Forms/registerForm";
+import logo from "../../assets/img/Logo.svg";
+import Image from "next/image";
 import Link from "next/link";
 
 const RegisterPage = () => {
   return (
     <>
       <main className="flex flex-col body">
-        <div className=" flex justify-end p-6">
-          <Link href={"/"} className="btn-back">
+        <div className=" flex justify-center items-center p-6 gap-8">
+          <Image
+            priority
+            src={logo}
+            width={250}
+            alt="Clients & Contacts Logo"
+          />
+          <Link href={"/"} className="btn bg disable w-24">
             Voltar
           </Link>
         </div>

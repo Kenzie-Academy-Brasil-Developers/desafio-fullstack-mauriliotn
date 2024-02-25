@@ -5,6 +5,7 @@ import { api } from "@/services/api";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { TiArrowBackOutline } from "react-icons/ti";
 
 interface PageProps {
   params: { id: string };
@@ -32,6 +33,7 @@ const Contact = async ({ params }: PageProps) => {
           <div className="container flex justify-between items-center py-11 px-4 ">
             <h1 className="text-lg font-semibold leading-7 "> Olá, {user}</h1>
             <Link href={"/dashboard"} className="btn-back">
+              <TiArrowBackOutline className="text-5xl" />
               Voltar
             </Link>
           </div>

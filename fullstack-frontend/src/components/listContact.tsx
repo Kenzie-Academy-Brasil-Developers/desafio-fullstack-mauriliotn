@@ -12,14 +12,7 @@ export const ListContacts = () => {
 
   return (
     <>
-      {isOpenModal && <ModalAddContact toggleModal={toggleModal} />}
       <div className="flex flex-col container ">
-        <div className="flex justify-end">
-          <button type="button" onClick={(e) => toggleModal()}>
-            <MdOutlineCreateNewFolder className="text-5xl hover:text-pink-800" />
-          </button>
-        </div>
-
         <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 items-center justify-items-start">
           {contacts.map((cont) => (
             <Card key={cont.id} contact={cont} />
