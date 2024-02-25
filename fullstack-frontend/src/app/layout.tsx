@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Roboto, Roboto_Serif } from "next/font/google";
+import { Inter, Roboto_Serif } from "next/font/google";
 import "./style/globals.css";
 import "./style/toastfy.css";
 import "./style/reset.css";
@@ -26,6 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/HeadIcon.svg" />
+      </head>
       <Providers>
         <body className={roboto.className}>
           <ToastContainer theme="dark" autoClose={1500} stacked />
