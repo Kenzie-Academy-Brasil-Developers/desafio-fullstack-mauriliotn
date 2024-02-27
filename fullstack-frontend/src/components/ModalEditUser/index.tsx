@@ -6,7 +6,6 @@ import { ImSpinner } from "react-icons/im";
 import InputTelep from "../inputs/InputPhone";
 import { UserData } from "@/schemas/user.schema";
 import { useAuth } from "@/contexts/AuthContext";
-import InputPassword from "../inputs/inputPassword";
 
 interface ModalProps {
   toggleModal: () => void;
@@ -24,7 +23,7 @@ export const ModalEditUser = ({ toggleModal }: ModalProps) => {
   } = useForm<UserData>();
 
   useEffect(() => {
-    const userToHandler = { ...userForm, password: "" };
+    const userToHandler = userForm;
 
     if (!userToHandler) {
       return;
@@ -64,13 +63,7 @@ export const ModalEditUser = ({ toggleModal }: ModalProps) => {
           disabled={loading}
           {...register("email")}
         />
-        <InputPassword
-          label="Senha"
-          placeholder="Digite aqui sua senha"
-          autoComplete="new-password"
-          error={errors.password}
-          {...register("password")}
-        />
+
         <InputTelep
           id="telephone"
           label="Telefone"
